@@ -38,12 +38,34 @@ public class LifeCycleDemo extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html");
-		PrintWriter pw = response.getWriter();
-		pw.println("<html><body>");
-		pw.println(msg +"Service method executed");
-		pw.println("</body></html>");
-		pw.close();
+//		response.setContentType("text/html");
+//		PrintWriter pw = response.getWriter();
+//		pw.println("<html><body>");
+//		pw.println(msg +"Service method executed");
+//		pw.println("</body></html>");
+//		pw.close();
+		
+		if(request.getMethod().equalsIgnoreCase("GET"))
+		{
+			doGet(request, response);
+		}
+		else if(request.getMethod().equalsIgnoreCase("POST"))
+		{
+			doPost(request, response);
+		}
+		
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		response.getWriter().println("Request handled by doGet()");
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		response.getWriter().println("Request handled by doPost()");
 	}
 
 }
+
+//<input type = "submit" value = "call service() method">
