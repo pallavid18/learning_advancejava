@@ -1,37 +1,37 @@
-package com;
+package url;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/SecondServlet")
-public class SecondServlet extends HttpServlet {
+@WebServlet("/ServletTwo")
+public class ServletTwo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public SecondServlet() {
+    public ServletTwo() {
         super();
-
+        // TODO Auto-generated constructor stub
     }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			
 			response.setContentType("text/html");
 			PrintWriter pw = response.getWriter();
-			Cookie ck[] = request.getCookies();
-			pw.print("Hello   "+ck[0].getValue()+"   Thank You For Visiting");
+			
+			String s = request.getParameter("utest");
+			pw.print("Hello "+s);
+			pw.print("  Thank you for visiting this site");
+			
 			pw.close();
 			
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-
 	}
 
 }
