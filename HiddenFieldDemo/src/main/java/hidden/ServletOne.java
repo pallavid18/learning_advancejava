@@ -25,7 +25,7 @@ public class ServletOne extends HttpServlet {
 			PrintWriter pw = response.getWriter();
 			
 			String s = request.getParameter("username");
-			pw.print("Welcome "+s);
+			pw.print("Welcome "+s +" ");
 			
 			pw.print("<form action='ServletTwo' method='get'>");
 			pw.print("<input type ='hidden' name ='hfield' value ='"+s+"'>");

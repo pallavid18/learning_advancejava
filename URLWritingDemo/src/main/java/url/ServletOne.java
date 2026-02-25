@@ -24,7 +24,7 @@ public class ServletOne extends HttpServlet {
 			PrintWriter pw = response.getWriter();
 			
 			String s = request.getParameter("username");
-			pw.print("Welcome "+s);
+			pw.print("Welcome "+s+" ");
 		
 			pw.print("<a href='ServletTwo?utest="+s+"'>  Let's Visit</a>");
 						
