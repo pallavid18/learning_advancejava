@@ -1,36 +1,28 @@
 package com;
 
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-//@WebServlet("/ServletConfigClass")
-public class ServletConfigClass extends HttpServlet {
+@WebServlet("/ServletConfig2")
+public class ServletConfig2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public ServletConfigClass() {
+ 
+    public ServletConfig2() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
-    
-    //specific config oe local servlet access specific parameter from web.xml
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
-		
-		ServletConfig sc = getServletConfig();
-		String n = sc.getInitParameter("Name");
-		String s = sc.getInitParameter("SurName");
-		pw.println("Your init parameter is : "+n  +"  "+s);
-		
-		 
-		
+
 		ServletContext context = getServletContext();
 		String p = context.getInitParameter("project");
 		pw.println("Context Parameter is : "+p);
