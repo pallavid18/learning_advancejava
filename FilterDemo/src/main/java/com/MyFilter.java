@@ -28,8 +28,6 @@ public class MyFilter extends HttpFilter implements Filter {
 		pw.println("Filter is invoked Pre-Processing");
 		chain.doFilter(request, response);
 		pw.println("Filter is invoked Post-Processing");
-		
-		
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
