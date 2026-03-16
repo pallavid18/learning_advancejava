@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CRUD test </title>
+</head>
+<body> 
+<form  action="SaveServlet" method="post">
+EmpID : <input type="number" name="id"><br><br>
+Name : <input type="text" name="name" ><br><br>
+Password : <input type="password" name="password" ><br><br>
+Email : <input type="text" name="email" ><br><br>
+Country : <select name="country" style="width:150px">
+<option>India</option>
+<option>USA</option>
+<option>UK</option>
+<option>Other</option>
+</select><br><br>
+<input type="submit" value="Save Emp details" ><br>
+</form>
+<br><br>
+<a href="ViewServlet">View Employees</a>
+</body>
+</html>
