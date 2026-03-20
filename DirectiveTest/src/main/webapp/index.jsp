@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Directives</title>
+<title>Pages Directives</title>
 </head>
 <body>
-<%-- <%@  page import="java.util.Date" %> --%>
+<%-- <%@  page import="java.util.Date" %>   extends --%>
 Todays Date is : <%= new Date()%>
+<br>
 </body>
 </html>
