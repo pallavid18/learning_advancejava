@@ -30,9 +30,7 @@
 <!--  Mapping resource -->
 
 
-<mapping resource="employee.hbm.xml"/>
-
-
+<mapping class ="test.Employee"/>
 
 </session-factory>
 

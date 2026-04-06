@@ -12,10 +12,7 @@
 
 <property name="hibernate.connection.password">pallavi2015</property>
 
-
-
 <!--  Hibernate Properties -->
-
 
 <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
@@ -25,16 +22,10 @@
 
 <property name="hibernate.format_sql">true</property>
 
-
-
 <!--  Mapping resource -->
-
 
 <mapping resource="employee.hbm.xml"/>
 
-
-
 </session-factory>
-
 
 </hibernate-configuration>
