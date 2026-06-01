@@ -22,7 +22,7 @@
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
   -->
-  <!-- OpenSSL support using Tomcat Native -->
+  <!-- APR connector and OpenSSL support using Tomcat Native -->
   <Listener className="org.apache.catalina.core.AprLifecycleListener"/>
   <!-- OpenSSL support using FFM API from Java 22 -->
   <!-- <Listener className="org.apache.catalina.core.OpenSSLLifecycleListener" /> -->
@@ -57,19 +57,22 @@
 
     <!-- A "Connector" represents an endpoint by which requests are received
          and responses are returned. Documentation at :
-         HTTP Connector: /docs/config/http.html
-         AJP  Connector: /docs/config/ajp.html
+         Java HTTP Connector: /docs/config/http.html
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443"/>
+    <Connector connectionTimeout="20000" maxParameterCount="1000" port="8080" protocol="HTTP/1.1" redirectPort="8443"/>
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
                port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
-               redirectPort="8443" />
+               redirectPort="8443"
+               maxParameterCount="1000"
+               />
     -->
-    <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
+    <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443
          This connector uses the NIO implementation. The default
          SSLImplementation will depend on the presence of the APR/native
          library and the useOpenSSL attribute of the AprLifecycleListener.
@@ -78,11 +81,32 @@
     -->
     <!--
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
-               maxThreads="150" SSLEnabled="true">
-        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+               maxThreads="150" SSLEnabled="true"
+               maxParameterCount="1000"
+               >
         <SSLHostConfig>
             <Certificate certificateKeystoreFile="conf/localhost-rsa.jks"
                          certificateKeystorePassword="changeit" type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+    -->
+    <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
+         This connector uses the APR/native implementation which always uses
+         OpenSSL for TLS.
+         Either JSSE or OpenSSL style configuration may be used. OpenSSL style
+         configuration is used below.
+    -->
+    <!--
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol"
+               maxThreads="150" SSLEnabled="true"
+               maxParameterCount="1000"
+               >
+        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+        <SSLHostConfig>
+            <Certificate certificateKeyFile="conf/localhost-rsa-key.pem"
+                         certificateFile="conf/localhost-rsa-cert.pem"
+                         certificateChainFile="conf/localhost-rsa-chain.pem"
+                         type="RSA" />
         </SSLHostConfig>
     </Connector>
     -->
@@ -92,7 +116,9 @@
     <Connector protocol="AJP/1.3"
                address="::1"
                port="8009"
-               redirectPort="8443" />
+               redirectPort="8443"
+               maxParameterCount="1000"
+               />
     -->
 
     <!-- An Engine represents the entry point (within Catalina) that processes
@@ -136,7 +162,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="DemoServletProgram" path="/DemoServletProgram" reloadable="true" source="org.eclipse.jst.jee.server:DemoServletProgram"/><Context docBase="ParameterDemo" path="/ParameterDemo" reloadable="true" source="org.eclipse.jst.jee.server:ParameterDemo"/><Context docBase="PersonalInfo" path="/PersonalInfo" reloadable="true" source="org.eclipse.jst.jee.server:PersonalInfo"/><Context docBase="SessionTrackingDemo" path="/SessionTrackingDemo" reloadable="true" source="org.eclipse.jst.jee.server:SessionTrackingDemo"/><Context docBase="HiddenFieldDemo" path="/HiddenFieldDemo" reloadable="true" source="org.eclipse.jst.jee.server:HiddenFieldDemo"/><Context docBase="URLWritingDemo" path="/URLWritingDemo" reloadable="true" source="org.eclipse.jst.jee.server:URLWritingDemo"/><Context docBase="HTTPSessionDemo" path="/HTTPSessionDemo" reloadable="true" source="org.eclipse.jst.jee.server:HTTPSessionDemo"/><Context docBase="RequestDispatcherDemo" path="/RequestDispatcherDemo" reloadable="true" source="org.eclipse.jst.jee.server:RequestDispatcherDemo"/><Context docBase="SendredirectTest" path="/SendredirectTest" reloadable="true" source="org.eclipse.jst.jee.server:SendredirectTest"/><Context docBase="ServletConfigTest" path="/ServletConfigTest" reloadable="true" source="org.eclipse.jst.jee.server:ServletConfigTest"/><Context docBase="ServletAttributeDemo" path="/ServletAttributeDemo" reloadable="true" source="org.eclipse.jst.jee.server:ServletAttributeDemo"/><Context docBase="FilterDemo" path="/FilterDemo" reloadable="true" source="org.eclipse.jst.jee.server:FilterDemo"/><Context docBase="AuthFilterDemo" path="/AuthFilterDemo" reloadable="true" source="org.eclipse.jst.jee.server:AuthFilterDemo"/><Context docBase="Exampl" path="/Exampl" reloadable="true" source="org.eclipse.jst.jee.server:Exampl"/><Context docBase="Example1" path="/Example1" reloadable="true" source="org.eclipse.jst.jee.server:Example1"/><Context docBase="Form" path="/Form" reloadable="true" source="org.eclipse.jst.jee.server:Form"/><Context docBase="CrudTest" path="/CrudTest" reloadable="true" source="org.eclipse.jst.jee.server:CrudTest"/><Context docBase="PaginationTest" path="/PaginationTest" reloadable="true" source="org.eclipse.jst.jee.server:PaginationTest"/><Context docBase="DemoPagination" path="/DemoPagination" reloadable="true" source="org.eclipse.jst.jee.server:DemoPagination"/><Context docBase="JSPTest" path="/JSPTest" reloadable="true" source="org.eclipse.jst.jee.server:JSPTest"/><Context docBase="TestImplicitJspObject" path="/TestImplicitJspObject" reloadable="true" source="org.eclipse.jst.jee.server:TestImplicitJspObject"/><Context docBase="ConfigJspTest" path="/ConfigJspTest" reloadable="true" source="org.eclipse.jst.jee.server:ConfigJspTest"/><Context docBase="SessionImpicitDemo" path="/SessionImpicitDemo" reloadable="true" source="org.eclipse.jst.jee.server:SessionImpicitDemo"/><Context docBase="DirectiveTest" path="/DirectiveTest" reloadable="true" source="org.eclipse.jst.jee.server:DirectiveTest"/><Context docBase="ExecptionDemo" path="/ExecptionDemo" reloadable="true" source="org.eclipse.jst.jee.server:ExecptionDemo"/><Context docBase="ActionTagDemo" path="/ActionTagDemo" reloadable="true" source="org.eclipse.jst.jee.server:ActionTagDemo"/><Context docBase="UseBeanDemo" path="/UseBeanDemo" reloadable="true" source="org.eclipse.jst.jee.server:UseBeanDemo"/><Context docBase="Practices1" path="/Practices1" reloadable="true" source="org.eclipse.jst.jee.server:Practices1"/><Context docBase="Practices2" path="/Practices2" reloadable="true" source="org.eclipse.jst.jee.server:Practices2"/><Context docBase="Practices3" path="/Practices3" reloadable="true" source="org.eclipse.jst.jee.server:Practices3"/><Context docBase="GetAndSetProperty" path="/GetAndSetProperty" reloadable="true" source="org.eclipse.jst.jee.server:GetAndSetProperty"/><Context docBase="LoginMVC" path="/LoginMVC" reloadable="true" source="org.eclipse.jst.jee.server:LoginMVC"/><Context docBase="ExpressionDemo" path="/ExpressionDemo" reloadable="true" source="org.eclipse.jst.jee.server:ExpressionDemo"/><Context docBase="CustomTagDemo" path="/CustomTagDemo" reloadable="true" source="org.eclipse.jst.jee.server:CustomTagDemo"/><Context docBase="JSPCrudApp" path="/JSPCrudApp" reloadable="true" source="org.eclipse.jst.jee.server:JSPCrudApp"/><Context docBase="SpringMvcDemo" path="/SpringMvcDemo" reloadable="true" source="org.eclipse.jst.jee.server:SpringMvcDemo"/></Host>
+      <Context docBase="SpringMvcDemo" path="/SpringMvcDemo" reloadable="true" source="org.eclipse.jst.jee.server:SpringMvcDemo"/></Host>
     </Engine>
   </Service>
 </Server>
